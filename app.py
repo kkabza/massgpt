@@ -3,6 +3,10 @@ import urllib.request
 import json
 import os
 import ssl
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -21,11 +25,11 @@ def get_llm_response(query):
         body = str.encode(json.dumps(data))
         url = 'https://mass-project-xlcvs.eastus.inference.ml.azure.com/score'
         
-        # Replace with your API key
-        api_key = 'CnPRZ1EyRgwbtJEJNYXiArOlndlIjW41DNEYx9eKbs5nJij9o3iRJQQJ99BBAAAAAAAAAAAAINFRAZML29IY'  # Add your API key here
+        # Get API key from environment variable
+        api_key = os.environ.get('AZURE_API_KEY')
         
         if not api_key:
-            return "Error: API key not configured"
+            return "Error: API key not configured. Please set AZURE_API_KEY environment variable."
 
         headers = {
             'Content-Type': 'application/json',
